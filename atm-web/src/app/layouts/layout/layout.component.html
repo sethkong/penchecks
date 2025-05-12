@@ -1,0 +1,17 @@
+<div id="layout" class="flex flex-col min-h-[100dvh] p-0 m-0 bg-gray-100">
+    <div id="header" class="fixed top-0 right-0 left-0 bg-green-300">
+        <div class="mb-2 pt-2 md:w-4/6 ml-auto mr-auto">
+            <app-header></app-header>
+        </div>
+    </div>
+    <div id="content" class="h-full bg-gray-100">
+        <div class="mt-17 md:w-4/6 ml-auto mr-auto bg-white rounded-md">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div id="footer" class="bg-gray-100">
+        <div class="py-3 md:w-4/6 ml-auto mr-auto">
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>

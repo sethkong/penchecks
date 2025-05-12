@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+html,
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mdc-notched-outline__notch {
+    border-style: none;
+}
+
+.mat-mdc-icon-button {
+    line-height: normal;
+}

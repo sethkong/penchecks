@@ -1,0 +1,35 @@
+<div class="flex">
+    <div class="min-w-15 flex-initial">
+        <button [routerLink]="['/']" mat-icon-button aria-label="ATM&reg;">
+            <mat-icon>account_balance</mat-icon>
+        </button>
+        <span class="hidden lg:inline-block pl-2 font-medium text-2xl">ATM App</span>
+    </div>
+    <div class="w-full flex-1 pl-25">
+        <span class="hidden lg:inline-block">
+            <button mat-button [routerLink]="['/accounts']">Accounts</button>
+            <button mat-button [routerLink]="['/transfer']">Transfer</button>
+            <button mat-button [routerLink]="['/deposit']">Deposit</button>
+            <button mat-button [routerLink]="['/withdraw']">Withdraw</button>
+        </span>
+    </div>
+    <div class="max-w-fit min-w-fit lg:hidden">
+        <button [matMenuTriggerFor]="mainMenu" mat-icon-button aria-label="Menu">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #mainMenu="matMenu" yPosition="below">
+            <div>
+                <button mat-button [routerLink]="['/accounts']">Accounts</button>
+            </div>
+            <div>
+                <button mat-button [routerLink]="['/transfer']">Transfer</button>
+            </div>
+            <div>
+                <button mat-button [routerLink]="['/deposit']">Deposit</button>
+            </div>
+            <div>
+                <button mat-button [routerLink]="['/withdraw']">Withdraw</button>
+            </div>
+        </mat-menu>
+    </div>
+</div>

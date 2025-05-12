@@ -1,0 +1,27 @@
+.brand-tile {
+    overflow: visible;
+}
+
+#brand {
+    position: relative;
+    left: -5em;
+}
+
+#logo {
+    font-size: 2em;
+    font-weight: bold;
+
+    a, a:active, a:link {
+        text-decoration: none;
+        text-transform: capitalize;
+        color: navy;
+    }
+    a:hover {
+        color: grey;
+    }
+}
+
+#slogan {
+    padding-top: 1em;
+    font-size: 1em;
+}
