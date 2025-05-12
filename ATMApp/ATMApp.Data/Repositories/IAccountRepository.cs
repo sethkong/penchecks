@@ -1,4 +1,5 @@
-﻿using ATMApp.Domain.BankAccount;
+﻿using ATMApp.Domain;
+using ATMApp.Domain.BankAccount;
 
 namespace ATMApp.Data.Repositories
 {
@@ -8,5 +9,7 @@ namespace ATMApp.Data.Repositories
         Task<List<Transaction>> GetTransactions(Guid accountId, CancellationToken token = default(CancellationToken));
         Task<Transaction> Withdraw(Guid accountId, decimal amount, CancellationToken token = default(CancellationToken));
         Task<Transaction> Deposit(Guid accountId, decimal amount, CancellationToken token = default(CancellationToken));
+        Task<Account> OpenBankAccount(Account account, CancellationToken token = default(CancellationToken));
+        Task<List<EntityKind>> GetEntityKinds(string? code = null, CancellationToken token = default(CancellationToken));
     }
 }

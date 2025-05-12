@@ -4,7 +4,7 @@ namespace ATMApp.Data.Repositories
 {
     public class TypeRepository<T> : ITypeRepository<T> where T : EntityKind, new()
     {
-        public void Add(string name, string code, string description)
+        public void Add(string code, string name, string description, Guid? parentId = null)
         {
             using var context = new DatabaseContext();
             if (!context.Set<T>().Any(x => x.Code == code))
@@ -13,10 +13,17 @@ namespace ATMApp.Data.Repositories
                 {
                     Name = name,
                     Code = code,
-                    Description = description
+                    Description = description,
+                    ParentId = parentId
                 });
                 context.SaveChanges();
             }
+        }
+
+        public T? Get(string code)
+        {
+            using var context = new DatabaseContext();
+            return context.Set<T>().FirstOrDefault(x => x.Code == code);
         }
 
         public void Remove(string code)

@@ -1,4 +1,6 @@
-﻿namespace ATMApp.Domain.BankAccount
+﻿using Newtonsoft.Json;
+
+namespace ATMApp.Domain.BankAccount
 {
     public class Account : BaseEntity
     {
@@ -9,5 +11,9 @@
         public Guid AccountTypeId { get; set; }
         public EntityKind AccountType { get; set; } = new EntityKind();
         public ICollection<Transaction> Transactions { get; set; } = new HashSet<Transaction>();
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ATMApp.Domain.BankAccount
+﻿using Newtonsoft.Json;
+
+namespace ATMApp.Domain.BankAccount
 {
     public class Transaction : BaseEntity
     {
@@ -10,5 +12,9 @@
         public bool Reconcile { get; set; } = false;
         public Guid AccountId { get; set; }
         public Account Account { get; set; } = new Account();
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

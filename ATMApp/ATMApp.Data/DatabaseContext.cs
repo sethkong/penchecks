@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ATMApp.Data
 {
-    public class DatabaseContext : DbContext, IDatabaseContext
+    public class DatabaseContext : DbContext
     {
         private readonly string _connectionString = string.Empty;
 
@@ -16,7 +16,8 @@ namespace ATMApp.Data
 
         public DatabaseContext()
         {
-            _connectionString = "Host=localhost;Port=5432;Database=atmapp_dev;Username=postgres;Password=postgres";
+            _connectionString = Environment.GetEnvironmentVariable("ATM_ConnectionStrings__SqlConnectionString")
+                ?? "Host=localhost;Port=5432;Database=atmapp_dev;Username=postgres;Password=postgres";
         }
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
@@ -27,16 +28,12 @@ namespace ATMApp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!string.IsNullOrWhiteSpace(_connectionString))
-                optionsBuilder.UseNpgsql(_connectionString);
-
+            optionsBuilder.UseNpgsql(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            if (!string.IsNullOrWhiteSpace(_connectionString))
-                modelBuilder.HasPostgresExtension("uuid-ossp");
-
+            modelBuilder.HasPostgresExtension("uuid-ossp");
             modelBuilder.ApplyConfiguration(new EntityKindConfiguration());
             modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
