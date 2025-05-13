@@ -35,13 +35,13 @@ docker run --name postgresql \
 ```
 
 - Step 2: Optionally, create a environment variable for the PostgreSQL connection string.
-The hard-coded connection string in the project can be removed if its environment variable is setup. The PostgreSQL connection string was intentionally hard-coded for the convenience. It can be removed from the `appsettings.json` file of the `ATMApp.API` project and also from the `DatabaseContext.cs` file of the `ATMApp.Data` project.
+The hard-coded connection string in the project can be removed if its environment variable is setup. The PostgreSQL connection string was intentionally hard-coded for convenience. It can be removed from the `appsettings.json` file of the `ATMApp.API` project and also from the `DatabaseContext.cs` file of the `ATMApp.Data` project.
 
 ```
 ATM_ConnectionStrings__SqlConnectionString=Host=localhost;Port=5432;Database=atmapp_dev;Username=postgres;Password=postgres
 ```
 
-- Step 3: Create database objects by running .NET EF Core migrations. From a Terminal, assuming the .NET Core SDK and Entity Framework Core tools were isntalled, change directory into the `ATMApp.Data` directory and issue the following command.
+- Step 3: Create database objects by running .NET EF Core migrations. From a Terminal, assuming the .NET Core SDK and Entity Framework Core tools were installed, change directory into the `ATMApp.Data` directory and issue the following command.
 
 ```
 dotnet ef database update
