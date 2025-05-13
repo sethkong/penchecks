@@ -28,7 +28,7 @@ if (string.IsNullOrWhiteSpace(appSettings.connectionStrings.SqlConnectionString)
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(appSettings.connectionStrings.SqlConnectionString),
-    ServiceLifetime.Singleton);
+    ServiceLifetime.Scoped);
 
 // Add services to the container.
 builder.Services.AddScoped<IValidator<EntityKind>, EntityKindValidator>();
@@ -60,7 +60,6 @@ try
 {
     using var scope = app.Services.CreateScope();
     var databaseContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-    databaseContext.Database.SetConnectionString(appSettings.connectionStrings.SqlConnectionString);
     databaseContext.Database.Migrate();
 }
 catch (Exception ex)

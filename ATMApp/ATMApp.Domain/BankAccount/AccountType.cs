@@ -2,7 +2,7 @@
 {
     public enum AccountType
     {
-        Credit,
-        Debit
+        Checking,
+        Saving
     }
 }

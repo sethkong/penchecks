@@ -102,6 +102,14 @@ namespace ATMApp.Data.Repositories
             try
             {
                 _logger.LogInformation("Feches all transactions");
+                if (accountId == Guid.Empty || string.IsNullOrEmpty(accountId.ToString()))
+                {
+                    apiResponse.IsSuccessful = true;
+                    apiResponse.Message = "Account ID is required";
+                    apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    apiResponse.Data = null;
+                    return await Task.FromResult(apiResponse);
+                }
                 var transactions = await _accountRepository.GetTransactions(accountId, token);
                 apiResponse.IsSuccessful = true;
                 apiResponse.Message = "Gets transactions successfully";
@@ -135,7 +143,21 @@ namespace ATMApp.Data.Repositories
                     apiResponse.StatusCode = HttpStatusCode.BadRequest;
                     return apiResponse;
                 }
-                await _accountRepository.OpenBankAccount(account, token);
+                var newAccount = await _accountRepository.OpenBankAccount(account, token);
+                if (newAccount == null)
+                {
+                    apiResponse.IsSuccessful = false;
+                    apiResponse.Message = "Failed to create the new account";
+                    apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    apiResponse.Data = null;
+                }
+                else
+                {
+                    apiResponse.IsSuccessful = true;
+                    apiResponse.Message = "New account was created successfully";
+                    apiResponse.StatusCode = HttpStatusCode.OK;
+                    apiResponse.Data = newAccount;
+                }
             }
             catch (Exception ex)
             {
@@ -154,11 +176,22 @@ namespace ATMApp.Data.Repositories
             try
             {
                 _logger.LogInformation("Feches all accounts");
-                var transaction = await _accountRepository.Withdraw(accountId, amount, token);
-                apiResponse.IsSuccessful = true;
-                apiResponse.Message = "Withdrew successfully";
-                apiResponse.StatusCode = HttpStatusCode.OK;
-                apiResponse.Data = transaction;
+                var canWithdraw = await _accountRepository.CanWithdraw(accountId, amount, token);
+                if (!canWithdraw)
+                {
+                    apiResponse.IsSuccessful = false;
+                    apiResponse.Message = "Insufficient balance";
+                    apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    apiResponse.Data = null;
+                }
+                else
+                {
+                    var transaction = await _accountRepository.Withdraw(accountId, amount, token);
+                    apiResponse.IsSuccessful = true;
+                    apiResponse.Message = "Withdrew successfully";
+                    apiResponse.StatusCode = HttpStatusCode.OK;
+                    apiResponse.Data = transaction;
+                }
             }
             catch (Exception ex)
             {

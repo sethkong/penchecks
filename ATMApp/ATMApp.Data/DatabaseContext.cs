@@ -20,6 +20,11 @@ namespace ATMApp.Data
                 ?? "Host=localhost;Port=5432;Database=atmapp_dev;Username=postgres;Password=postgres";
         }
 
+        public DatabaseContext(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
@@ -28,12 +33,14 @@ namespace ATMApp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(_connectionString);
+            if (!string.IsNullOrWhiteSpace(_connectionString))
+                optionsBuilder.UseNpgsql(_connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresExtension("uuid-ossp");
+            if (!string.IsNullOrWhiteSpace(_connectionString))
+                modelBuilder.HasPostgresExtension("uuid-ossp");
             modelBuilder.ApplyConfiguration(new EntityKindConfiguration());
             modelBuilder.ApplyConfiguration(new AccountConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());

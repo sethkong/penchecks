@@ -22,8 +22,15 @@ namespace ATMApp.Data.Repositories
             _logger.Log(LogLevel.Information, "Opens a new bank account: {account}", account.ToString());
             using var context = _options != null ?
                   new DatabaseContext(_options) : new DatabaseContext();
-            await context.AddAsync(account, token);
-            return await Task.FromResult(account);
+            context.Accounts.Entry(account).State = EntityState.Added;
+            await context.SaveChangesAsync();
+
+            var newAccount = await context.Accounts.Where(x => x.Id == account.Id)
+                .Include(x => x.AccountType)
+                .Include(x => x.Transactions).ThenInclude(x => x.TransactionType)
+                .FirstOrDefaultAsync() ?? throw new Exception("Failed to fetch the newly created account");
+
+            return await Task.FromResult(newAccount);
         }
 
         public async Task<Transaction> Deposit(Guid accountId, decimal amount, CancellationToken token = default)
@@ -39,7 +46,9 @@ namespace ATMApp.Data.Repositories
             _logger.Log(LogLevel.Information, "Fetches all accounts");
             using var context = _options != null ?
                    new DatabaseContext(_options) : new DatabaseContext();
-            return await context.Accounts.ToListAsync(token);
+            return await context.Accounts
+                .Include(x => x.AccountType)
+                .ToListAsync(token);
         }
 
         public async Task<List<Transaction>> GetTransactions(Guid accountId, CancellationToken token = default)
@@ -47,7 +56,10 @@ namespace ATMApp.Data.Repositories
             _logger.Log(LogLevel.Information, "Fetches all transactions by account ID: {accountId}", accountId);
             using var context = _options != null ?
                   new DatabaseContext(_options) : new DatabaseContext();
-            return await context.Transactions.Where(x => x.AccountId == accountId).ToListAsync(token);
+            return await context.Transactions.Where(x => x.AccountId == accountId)
+                .Include(x => x.TransactionType)
+                .Include(x => x.Account)
+                .ToListAsync(token);
         }
 
         public async Task<Transaction> Withdraw(Guid accountId, decimal amount, CancellationToken token = default)
@@ -103,11 +115,15 @@ namespace ATMApp.Data.Repositories
             transaction.Amount = amount;
             transaction.PostingDate = DateTime.UtcNow;
 
-            await context.Transactions.AddAsync(transaction, token);
+            context.Transactions.Entry(transaction).State = EntityState.Added;
             await context.SaveChangesAsync(token);
             await context.Database.CommitTransactionAsync(token);
 
-            return await Task.FromResult(transaction);
+            var newTransaction = await context.Transactions.Where(x => x.Id == transaction.Id)
+                .Include(x => x.TransactionType)
+                .FirstOrDefaultAsync(token) ?? throw new Exception("Failed to fetch the newly created transaction");
+
+            return await Task.FromResult(newTransaction);
         }
 
         public async Task<List<EntityKind>> GetEntityKinds(string? code = null, CancellationToken token = default)
@@ -117,6 +133,20 @@ namespace ATMApp.Data.Repositories
                   new DatabaseContext(_options) : new DatabaseContext();
             return string.IsNullOrEmpty(code) ? await context.EntityKinds.ToListAsync(token)
                 : await context.EntityKinds.Where(x => x.Code == code).ToListAsync(token);
+        }
+
+        public async Task<bool> CanWithdraw(Guid accountId, decimal amount, CancellationToken token = default)
+        {
+            _logger.Log(LogLevel.Information, "Checks if {amount} can be withdrawn from {accountId}", amount, accountId);
+            using var context = _options != null ?
+                   new DatabaseContext(_options) : new DatabaseContext();
+            var account = await context.Accounts.Where(x => x.Id == accountId).FirstOrDefaultAsync(token);
+            if (account == null)
+            {
+                _logger.Log(LogLevel.Error, "Cannot determine account");
+                return await Task.FromResult(false);
+            }
+            return await Task.FromResult(account.Balance >= amount);
         }
     }
 }
