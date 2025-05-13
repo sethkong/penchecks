@@ -1,1 +1,59 @@
-<p>transfer works!</p>
+<div class="p-5">
+    <h3 class="mb-5">Transfer</h3>
+    <form class="flex flex-col lg:flex-wrap gap-1" [formGroup]="transferForm" autocomplete="off"
+        (keydown.enter)="$event.preventDefault()">
+        <div>
+            <mat-form-field floatLabel="auto" class="w-84">
+                <mat-label>From Account</mat-label>
+                <select formControlName="fromAccountId" id="fromAccountId" matNativeControl required>
+                    @for (account of accounts; track account) {
+                    <option [value]="account.id">{{account.name}}</option>
+                    }
+                </select>
+            </mat-form-field>
+            @if (fromAccountIdHasRequiredError) {
+            <mat-error class="mb-6">From account is required</mat-error>
+            }
+        </div>
+        <div>
+            <mat-form-field floatLabel="auto" class="w-84">
+                <mat-label>To Account</mat-label>
+                <select formControlName="toAccountId" id="toAccountId" matNativeControl required>
+                    @for (account of accounts; track account) {
+                    <option [value]="account.id">{{account.name}}</option>
+                    }
+                </select>
+            </mat-form-field>
+            @if (toAccountIdHasRequiredError) {
+            <mat-error class="mb-6">To account is required</mat-error>
+            }
+        </div>
+        <div>
+            <mat-form-field floatLabel="auto" class="w-84">
+                <mat-label>Amount</mat-label>
+                <input matInput formControlName="amount" id="amount" required>
+            </mat-form-field>
+            @if (amountHasRequiredError) {
+            <mat-error class="mb-6">Amount is required</mat-error>
+            }
+        </div>
+        <div>
+            <mat-form-field floatLabel="auto" class="w-84">
+                <mat-label>Transfer Date</mat-label>
+                <input matInput [matDatepicker]="transferAt" formControlName="transferAt" placeholder="MM/DD/YYYY">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="transferAt"></mat-datepicker-toggle>
+                <mat-datepicker #transferAt></mat-datepicker>
+            </mat-form-field>
+            @if (transferAtHasRequiredError) {
+            <mat-error class="mb-6">Transfer date is required</mat-error>
+            }
+        </div>
+        <div>
+            <button (click)="onTransferClick()" mat-button aria-label="Transfer">
+                <mat-icon>save</mat-icon>
+                Transfer
+            </button>
+        </div>
+    </form>
+</div>

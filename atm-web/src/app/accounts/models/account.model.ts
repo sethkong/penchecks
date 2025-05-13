@@ -18,8 +18,20 @@ export interface AccountRequest {
     accountTypeId: string;
 }
 
-export interface TransferRequest {
-    fromAccountId: string;
-    toAccountId: string;
-    account: number;
+export class TransferRequest {
+    fromAccountId: string = '';
+    toAccountId: string = '';
+    amount: number = 0;
+    transferAt?: Date;
+    notes: string = '';
+}
+
+export class DepositRequest {
+    toAccountId: string = '';
+    amount: number = 0;
+}
+
+export class WithdrawRequest {
+    fromAccountId: string = '';
+    amount: number = 0;
 }

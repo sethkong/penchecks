@@ -1,1 +1,34 @@
-<p>deposit works!</p>
+<div class="p-5">
+    <h3 class="mb-5">Deposit</h3>
+    <form class="flex flex-col lg:flex-wrap gap-1" [formGroup]="depositForm" autocomplete="off"
+        (keydown.enter)="$event.preventDefault()">
+        <div>
+            <mat-form-field floatLabel="auto" class="w-84">
+                <mat-label>To Account</mat-label>
+                <select formControlName="toAccountId" id="toAccountId" matNativeControl required>
+                    @for (account of accounts; track account) {
+                    <option [value]="account.id">{{account.name}}</option>
+                    }
+                </select>
+            </mat-form-field>
+            @if (toAccountIdHasRequiredError) {
+            <mat-error class="mb-6">To account is required</mat-error>
+            }
+        </div>
+        <div>
+            <mat-form-field floatLabel="auto" class="w-84">
+                <mat-label>Amount</mat-label>
+                <input matInput formControlName="amount" id="amount" required>
+            </mat-form-field>
+            @if (amountHasRequiredError) {
+            <mat-error class="mb-6">Amount is required</mat-error>
+            }
+        </div>
+        <div>
+            <button (click)="onDepositClick()" mat-button aria-label="Deposit">
+                <mat-icon>save</mat-icon>
+                Deposit
+            </button>
+        </div>
+    </form>
+</div>

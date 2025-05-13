@@ -7,6 +7,8 @@ namespace ATMApp.Domain.BankAccount
         public Guid FromAccountId { get; set; }
         public Guid ToAccountId { get; set; }
         public decimal Amount { get; set; }
+        public DateTime? TransferAt { get; set; }
+        public string? Notes { get; set; } = string.Empty;
 
         public override string ToString()
         {

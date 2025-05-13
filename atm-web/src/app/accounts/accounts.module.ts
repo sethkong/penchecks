@@ -27,6 +27,6 @@ import { TransactionsComponent } from './transactions/transactions.component';
     DepositComponent,
     WithdrawComponent,
     TransactionsComponent,
-  ]
+  ],
 })
 export class AccountsModule { }
