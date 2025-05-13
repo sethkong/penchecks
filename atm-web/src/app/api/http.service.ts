@@ -8,7 +8,7 @@ import { ApiResponse } from './http-response.model';
   providedIn: 'root'
 })
 export class HttpService {
-  private _apiUrl: string = '';
+  private _apiUrl: string = 'localhost:7132/Accounts';
 
   get apiUrl(): string {
     return this._apiUrl;
@@ -31,7 +31,7 @@ export class HttpService {
   }
 
   getEndpoint(resource: string): string {
-    return `https://${this._apiUrl.trim()}/api/${resource.trim()}`;
+    return `https://${this._apiUrl.trim()}/${resource.trim()}`;
   }
 
   protected handleError(error: HttpErrorResponse): Observable<any> {

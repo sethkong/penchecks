@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LayoutsModule } from './layouts/layouts.module';
 import { HomeModule } from './home/home.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,7 @@ import { HomeModule } from './home/home.module';
   imports: [
     LayoutsModule,
     HomeModule,
+    AccountsModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

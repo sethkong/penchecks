@@ -12,5 +12,6 @@ namespace ATMApp.Data.Repositories
         Task<Account> OpenBankAccount(Account account, CancellationToken token = default(CancellationToken));
         Task<List<EntityKind>> GetEntityKinds(string? code = null, CancellationToken token = default(CancellationToken));
         Task<bool> CanWithdraw(Guid accountId, decimal amount, CancellationToken token = default(CancellationToken));
+        Task<List<Transaction>?> Transfer(TransferRequest request, CancellationToken token = default);
     }
 }

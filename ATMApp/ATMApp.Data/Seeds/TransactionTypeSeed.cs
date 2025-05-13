@@ -14,6 +14,7 @@ namespace ATMApp.Data.Seeds
             {
                 _repository.Add("Debit", "Debit", "The debit transaction", transactionType.Id);
                 _repository.Add("Credit", "Credit", "The credit transaction", transactionType.Id);
+                _repository.Add("Transfer", "Transfer", "The transfer transaction", transactionType.Id);
             }
         }
 
@@ -21,6 +22,7 @@ namespace ATMApp.Data.Seeds
         {
             _repository.Remove("Debit");
             _repository.Remove("Credit");
+            _repository.Remove("Transfer");
         }
     }
 }

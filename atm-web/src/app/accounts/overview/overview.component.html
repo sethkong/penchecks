@@ -1,1 +1,17 @@
-<p>overview works!</p>
+<div class="p-5">
+    <h3>Account Overview</h3>
+    <div class="grid grid-cols-2 gap-1">
+        @for (account of accounts; track account) {
+        <div class="min-fit-w">
+            <a mat-button [routerLink]="['/transactions']" [queryParams]="{'accountId': account.id}">
+                {{ account.name }} - {{ account.accountNumber.slice(-4)}}
+            </a>
+        </div>
+        <div class="min-fit-w">
+            <a mat-button [routerLink]="['/transactions']" [queryParams]="{'accountId': account.id}">
+                {{ account.balance | currency:'USD' }}
+            </a>
+        </div>
+        }
+    </div>
+</div>

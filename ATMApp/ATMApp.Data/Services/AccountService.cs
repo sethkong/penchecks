@@ -170,12 +170,47 @@ namespace ATMApp.Data.Repositories
             return await Task.FromResult(apiResponse);
         }
 
+        public async Task<ApiResponse<List<Transaction>?>> Transfer(TransferRequest request, CancellationToken token = default)
+        {
+            var apiResponse = new ApiResponse<List<Transaction>?>();
+            try
+            {
+                _logger.LogInformation("Transfers {amount} from {fromAccountId} to {toAccountId}",
+                    request.Amount, request.FromAccountId, request.ToAccountId);
+                var canWithdraw = await _accountRepository.CanWithdraw(request.FromAccountId, request.Amount, token);
+                if (!canWithdraw)
+                {
+                    apiResponse.IsSuccessful = false;
+                    apiResponse.Message = "Cannot transfer due to insufficient balance";
+                    apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    apiResponse.Data = null;
+                }
+                else
+                {
+                    var transactions = await _accountRepository.Transfer(request, token);
+                    apiResponse.IsSuccessful = true;
+                    apiResponse.Message = "Transferred successfully";
+                    apiResponse.StatusCode = HttpStatusCode.OK;
+                    apiResponse.Data = transactions;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                apiResponse.IsSuccessful = false;
+                apiResponse.Message = ex.Message;
+                apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.Data = null;
+            }
+            return await Task.FromResult(apiResponse);
+        }
+
         public async Task<ApiResponse<Transaction>> Withdraw(Guid accountId, decimal amount, CancellationToken token = default)
         {
             var apiResponse = new ApiResponse<Transaction>();
             try
             {
-                _logger.LogInformation("Feches all accounts");
+                _logger.LogInformation("Withdraws {amount} from {accountId}", amount, accountId);
                 var canWithdraw = await _accountRepository.CanWithdraw(accountId, amount, token);
                 if (!canWithdraw)
                 {

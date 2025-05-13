@@ -8,6 +8,7 @@ namespace ATMApp.Domain.BankAccount
         public Guid TransactionTypeId { get; set; }
         public EntityKind TransactionType { get; set; } = new EntityKind();
         public decimal Amount { get; set; }
+        public string Description { get; set; } = string.Empty;
         public decimal Balance { get; set; }
         public bool Reconcile { get; set; } = false;
         public Guid AccountId { get; set; }

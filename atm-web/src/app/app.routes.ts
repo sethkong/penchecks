@@ -5,11 +5,13 @@ import { OverviewComponent } from './accounts/overview/overview.component';
 import { TransferComponent } from './accounts/transfer/transfer.component';
 import { DepositComponent } from './accounts/deposit/deposit.component';
 import { WithdrawComponent } from './accounts/withdraw/withdraw.component';
+import { TransactionsComponent } from './accounts/transactions/transactions.component';
 
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'accounts', component: OverviewComponent },
+    { path: 'transactions', component: TransactionsComponent },
     { path: 'transfer', component: TransferComponent },
     { path: 'deposit', component: DepositComponent },
     { path: 'withdraw', component: WithdrawComponent },

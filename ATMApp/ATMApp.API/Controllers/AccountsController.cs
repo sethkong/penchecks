@@ -71,5 +71,14 @@ namespace ATMApp.API.Controllers
             var newAccount = await _accountService.OpenBankAccount(account, source.Token);
             return new JsonResult(newAccount);
         }
+
+        [HttpPost("Transfer")]
+        public async Task<IActionResult> Transfer([FromBody] TransferRequest request)
+        {
+            _logger.LogInformation("Transfer request: {0}", request.ToString());
+            var source = new CancellationTokenSource();
+            var transactions = await _accountService.Transfer(request, source.Token);
+            return new JsonResult(transactions);
+        }
     }
 }

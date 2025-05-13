@@ -6,11 +6,13 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS,
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
   MatError,
   MatFormField,
   MatFormFieldModule,
-  MatLabel } from '@angular/material/form-field';
+  MatLabel
+} from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +20,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatMenuModule } from '@angular/material/menu';
 import { ErrorsModule } from '../errors/errors.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,8 @@ import { ErrorsModule } from '../errors/errors.module';
     MatDividerModule,
     MatSidenavModule,
     MatMenuModule,
+    MatPaginatorModule,
+    MatTableModule,
   ],
   exports: [
     CommonModule,
@@ -63,9 +69,11 @@ import { ErrorsModule } from '../errors/errors.module';
     MatDividerModule,
     MatSidenavModule,
     MatMenuModule,
+    MatPaginatorModule,
+    MatTableModule,
   ],
   providers: [
-    { 
+    {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline', floatLabel: 'always' }
     }

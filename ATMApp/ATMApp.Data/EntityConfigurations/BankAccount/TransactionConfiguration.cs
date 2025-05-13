@@ -20,6 +20,10 @@ namespace ATMApp.Data.EntityConfigurations.BankAccount
             builder.Property(x => x.Amount).HasColumnType("decimal(12,4)")
               .HasColumnName("amount");
 
+            builder.Property(x => x.Description).HasColumnName("description")
+             .HasMaxLength(255)
+             .IsRequired(false);
+
             builder.Property(x => x.Balance).HasColumnType("decimal(12,4)")
               .HasColumnName("balance");
 
