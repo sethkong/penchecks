@@ -222,7 +222,7 @@ namespace ATMApp.Data.Repositories
             var toTransaction = new Transaction();
             toTransaction.TransactionTypeId = transactionType.Id;
             toTransaction.AccountId = toAccount.Id;
-            toTransaction.Balance = fromAccount.Balance;
+            toTransaction.Balance = toAccount.Balance;
             toTransaction.Amount = request.Amount;
             toTransaction.PostingDate = DateTime.UtcNow;
             toTransaction.Description = $"Transfered {request.Amount} to {toAccount.Name}";
